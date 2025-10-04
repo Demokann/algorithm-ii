@@ -1,0 +1,7 @@
+{
+    "java.project.sourcePaths": [
+        "Project\\BookSearch\\src",
+        "Project\\wackyraces"
+    ],
+    "java.project.referencedLibraries": []
+}
