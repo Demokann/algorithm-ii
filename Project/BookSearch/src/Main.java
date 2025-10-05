@@ -6,13 +6,16 @@ import java.nio.file.*;
 public class Main {
     public static void main(String[] args) {
         try {
-            cleanFile("the-hobbit-1.txt");
+            cleanFile("/Users/demokan/Documents/Projects/algorithm-ii/Project/BookSearch/src/the-hobbit-1.txt");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Define your book file path and character name
-        String bookFilePath = "the-hobbit-1.txt"; // Replace with path to your book file
+        String bookFilePath = "/Users/demokan/Documents/Projects/algorithm-ii/Project/BookSearch/src/the-hobbit-1.txt"; // Replace
+                                                                                                                        // with
+        // path to your
+        // book file
         String wordPattern = "Baggins"; // Replace with your character name
         String paragraphPattern = """
                 In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole,
@@ -45,8 +48,6 @@ public class Main {
             System.out.println("SEARCHING FOR WORD: " + wordPattern);
             runAllSearches(bookContent, wordPattern);
 
-            
-
         } catch (IOException e) {
             System.err.println("Error reading book file: " + e.getMessage());
         }
@@ -73,13 +74,13 @@ public class Main {
         // Print results for Sunday algorithm
         printResults(pattern, sundayResults, sundayDuration, text.length());
 
-        //Search using Rabin-Karp algorithm
+        // Search using Rabin-Karp algorithm
         System.out.println("\nRABIN KARP SEARCH");
         startTime = System.nanoTime();
         List<Integer> rabinKarpResults = rabinKarpSearch(text, pattern);
         endTime = System.nanoTime();
         double rabinKarpDuration = (endTime - startTime) / 1_000_000.0;
-        //Print results for Rabin-Karp algorithm
+        // Print results for Rabin-Karp algorithm
         printResults(pattern, rabinKarpResults, rabinKarpDuration, text.length());
 
         System.out.println("\nFSM SEARCH: ");
@@ -87,35 +88,35 @@ public class Main {
         List<Integer> fsmResults = fsmSearch(text, pattern);
         endTime = System.nanoTime();
         double fsmDuration = (endTime - startTime) / 1_000_000.0;
-        //Print result for FSM algorithm
+        // Print result for FSM algorithm
         printResults(pattern, fsmResults, fsmDuration, text.length());
 
-        //Search using KMP algorithm
+        // Search using KMP algorithm
         System.out.println("\nKMP SEARCH");
         startTime = System.nanoTime();
         List<Integer> kmpResults = kmpSearch(text, pattern);
         endTime = System.nanoTime();
         double kmpDuration = (endTime - startTime) / 1_000_000.0;
-        //Print results for KMP algorithm
+        // Print results for KMP algorithm
         printResults(pattern, kmpResults, kmpDuration, text.length());
-        //Search using Gustfield-z algorithm
+        // Search using Gustfield-z algorithm
         System.out.println("\nGUSTFIELD-Z SEARCH");
         startTime = System.nanoTime();
         List<Integer> gustfieldResults = gustfieldSearch(text, pattern);
         endTime = System.nanoTime();
         double gustfieldDuration = (endTime - startTime) / 1_000_000.0;
-        //Print results for Gustfield-z algorithm
+        // Print results for Gustfield-z algorithm
         printResults(pattern, gustfieldResults, gustfieldDuration, text.length());
     }
 
-    //Method for cleaning NON-ASCII character from text
+    // Method for cleaning NON-ASCII character from text
     public static void cleanFile(String filename) throws IOException {
         // Create a temporary file
         Path tempFile = Files.createTempFile("cleaned", ".txt");
 
         // Read from original file and write to temp file
         try (BufferedReader reader = new BufferedReader(new FileReader(filename));
-             PrintWriter writer = new PrintWriter(new FileWriter(tempFile.toFile()))) {
+                PrintWriter writer = new PrintWriter(new FileWriter(tempFile.toFile()))) {
 
             String line;
             while ((line = reader.readLine()) != null) {
@@ -151,7 +152,7 @@ public class Main {
         System.out.println("Book length: " + textLength + " characters");
     }
 
-    //brute force search algorithm
+    // brute force search algorithm
     public static List<Integer> bruteForceSearch(String text, String pattern) {
         int n = text.length();
         int m = pattern.length();
@@ -173,13 +174,14 @@ public class Main {
         return positions;
     }
 
-    //Sunday algorithm
+    // Sunday algorithm
     public static List<Integer> sundaySearch(String text, String pattern) {
         int n = text.length();
         int m = pattern.length();
         List<Integer> positions = new ArrayList<>();
 
-        // Preprocess - create array to store rightmost position of each character in pattern
+        // Preprocess - create array to store rightmost position of each character in
+        // pattern
         int[] lastPosition = new int[128]; // ASCII character set
 
         // Initialize with default value (if character not in pattern)
@@ -193,7 +195,7 @@ public class Main {
         }
 
         // Main search algorithm
-        for (int i = 0; i <= n - m; ) {
+        for (int i = 0; i <= n - m;) {
             int j = 0;
             // Check for match at current position
             while (j < m && pattern.charAt(j) == text.charAt(i + j)) {
@@ -312,7 +314,6 @@ public class Main {
         return positions;
     }
 
-
     // Condition function for FSM
     private static boolean cond(int k, int s, int a, String pattern) {
         // If k is positive, the character at index k-1 must match 'a'
@@ -321,7 +322,8 @@ public class Main {
         }
 
         // If s < k-1, we also need to verify the prefix condition
-        // This ensures the k characters we're considering form a valid prefix of the pattern
+        // This ensures the k characters we're considering form a valid prefix of the
+        // pattern
         if (s < k - 1) {
             for (int i = 0; i < s; i++) {
                 if (pattern.charAt(i) != pattern.charAt(i + (k - s - 1))) {
@@ -363,7 +365,7 @@ public class Main {
         return pi;
     }
 
-    //KMP search algorithm
+    // KMP search algorithm
     public static List<Integer> kmpSearch(String text, String pattern) {
         List<Integer> positions = new ArrayList<>();
         int n = text.length();
@@ -379,7 +381,7 @@ public class Main {
         int[] pi = computeFailureFunction(pattern);
 
         // Step 2: Perform the search
-        int q = 0;  // Number of characters matched
+        int q = 0; // Number of characters matched
 
         for (int i = 0; i < n; i++) {
             // If there's a mismatch, use the failure function to shift the pattern
@@ -403,7 +405,7 @@ public class Main {
         return positions;
     }
 
-    //Compute the Z-array gor gustfield algorithm
+    // Compute the Z-array gor gustfield algorithm
     public static int[] computeZArray(String str) {
         int n = str.length();
         int[] Z = new int[n];
@@ -455,7 +457,7 @@ public class Main {
         return Z;
     }
 
-    //Gustfield-z search algorithm
+    // Gustfield-z search algorithm
     public static List<Integer> gustfieldSearch(String text, String pattern) {
         List<Integer> positions = new ArrayList<>();
         // Concatenate pattern, a special character, and text
@@ -464,7 +466,6 @@ public class Main {
 
         int patternLength = pattern.length();
         int concatLength = concat.length();
-
 
         for (int i = 0; i < concatLength; i++) {
             if (Z[i] == patternLength) {
